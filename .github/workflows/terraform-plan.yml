@@ -1,0 +1,53 @@
+name: terraform-plan
+on:
+  pull_request:
+    branches: [ "*" ]
+
+permissions:                      # OIDC needs id-token
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: environments/dev   
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region:     ${{ secrets.AWS_REGION }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform init
+        run: terraform init -backend-config="profile=default"
+
+      - name: Terraform fmt check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform plan
+        id: plan
+        run: terraform plan -out=tfplan.binary
+
+      - name: Show plan summary in PR
+        uses: reviewdog/action-tfnotify@v1
+        with:
+          tfplan_path: tfplan.binary
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload plan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: environments/dev/tfplan.binary
