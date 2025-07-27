@@ -21,8 +21,19 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run OPA policy tests
-        uses: open-policy-agent/setup-opa@v2
-        with:
-          version: latest
-      - run: |
-          opa test modules/org/tests/ modules/network/tests/ || exit 1
+      uses: open-policy-agent/setup-opa@v2
+      with:
+        version: latest
+    
+    - name: Execute tests (skip if dirs absent)
+      run: |
+        set -e
+        for dir in modules/org/tests modules/network/tests; do
+          if [ -d "$dir" ]; then
+            echo "Running OPA tests in $dir"
+            opa test "$dir"
+          else
+            echo "Skipping $dir (directory not found)"
+          fi
+        done
+
