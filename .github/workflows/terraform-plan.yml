@@ -51,3 +51,7 @@ jobs:
         with:
           name: tfplan
           path: environments/dev/tfplan.binary
+          
+      - name: Debug caller identity
+        run: aws sts get-caller-identity
+
