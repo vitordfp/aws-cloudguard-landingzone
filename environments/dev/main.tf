@@ -10,7 +10,7 @@ terraform {
 
 provider "aws" {
   region  = "eu-west-1"
-  profile = "lz-admin"
+  #profile = "lz-admin"
 }
 
 module "org" {
