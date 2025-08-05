@@ -10,6 +10,7 @@ variable "scp_policies" {
   description = "Service control policies to attach"
   type        = map(string)
   default = {
-    BlockGlobalServices = "arn:aws:organizations::123456789012:policy/o-abcdef1234/BlockGlobalServices"
+    DevOpsTeam   = "p-57oic78t",
+    SecurityTeam = "p-57oic78t"
   }
 }
