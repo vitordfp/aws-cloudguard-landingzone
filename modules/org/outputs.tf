@@ -1,6 +1,6 @@
 output "organization_id" {
   description = "AWS Organization ID"
-  value       = aws_organizations_organization.root_org.id
+  value       = data.aws_organizations_organization.current.id
 }
 
 output "ou_ids" {
