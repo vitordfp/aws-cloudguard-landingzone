@@ -5,11 +5,11 @@ This repository provides a modular and secure AWS Landing Zone setup using Terra
 ---
 
 ## 📁 Project Structure
-├── .github/workflows # CI/CD workflows (plan, apply, security scans)
-├── environments/ # Environment-specific Terraform configurations (e.g., dev, prod)
-├── modules/ # Reusable Terraform modules (org, network, security, visionguard-s3)
-├── scripts/ # Utility scripts (bootstrap, cleanup)
-├── docs/ # Documentation (architecture, usage)
+|── .github/workflows # CI/CD workflows (plan, apply, security scans)
+|── environments/ # Environment-specific Terraform configurations (e.g., dev, prod)
+|── modules/ # Reusable Terraform modules (org, network, security, visionguard-s3)
+|── scripts/ # Utility scripts (bootstrap, cleanup)
+|── docs/ # Documentation (architecture, usage)
 
 
 ---
