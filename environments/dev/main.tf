@@ -17,6 +17,6 @@ module "org" {
   source               = "../../modules/org"
   organizational_units = ["SecurityTeam", "DevOpsTeam"]
   scp_policies = {
-    DenyGlobalServices = "arn:aws:organizations::770763203431:policy/o-03tvkc8u4y/service_control_policy/p-57oic78t"
+    DenyGlobalServices = "p-57oic78t"
   }
 }
