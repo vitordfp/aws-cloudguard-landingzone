@@ -15,6 +15,12 @@ variable "enable_security_hub" {
     default     = true
 }
 
+variable "enable_cloudtrail" {
+    description = "Enable or disable CloudTrail logging."
+    type        = bool
+    default     = true
+}
+
 variable "enable_guardduty" {
     description = "Enable or disable AWS GuardDuty for intelligent threat detection and continuous monitoring."
     type        = bool
@@ -25,4 +31,9 @@ variable "aws_region" {
     description = "AWS region where security services (CloudTrail, GuardDuty, Security Hub) will be deployed."
     type        = string
     default     = "eu-west-1"
+}
+
+variable "kms_key_id" {
+    description = "KMS key use ARN used for encrypting CloudTrail logs."
+    type        = string
 }
