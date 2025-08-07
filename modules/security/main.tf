@@ -17,7 +17,9 @@ resource "aws_securityhub_standards_subscription" "this" {
 resource "aws_cloudwatch_log_group" "trail_logs" {
     name              = "/aws/cloudtrail/${var.cloudtrail_trail_name}"
     retention_in_days = 90
+    kms_key_id        = var.kms_key_id
 }
+
 
 resource "aws_iam_role" "cloudtrail_logs_role" {
     name = "cloudtrail-logs-role"
