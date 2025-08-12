@@ -41,10 +41,10 @@ module "network" {
   hub_create_internet_gateway = true
 
   # Transit Gateway
-  create_transit_gateway               = true
-  tgw_auto_accept_shared_attachments   = "enable"
-  tgw_default_route_table_association  = "enable"
-  tgw_default_route_table_propagation  = "enable"
+  create_transit_gateway              = true
+  tgw_auto_accept_shared_attachments  = "enable"
+  tgw_default_route_table_association = "enable"
+  tgw_default_route_table_propagation = "enable"
 
   # Example spoke
   spokes = [
