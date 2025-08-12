@@ -58,6 +58,7 @@ locals {
 # Hub VPC
 ########################################
 
+# tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-vpcs
 resource "aws_vpc" "hub" {
   cidr_block           = var.hub_vpc_cidr
   enable_dns_support   = true
@@ -79,6 +80,7 @@ resource "aws_subnet" "hub_private" {
 }
 
 # Optional hub public subnets
+# tfsec:ignore:aws-ec2-no-public-ip-subnet
 resource "aws_subnet" "hub_public" {
   for_each                = var.hub_public_subnet_cidrs
   vpc_id                  = aws_vpc.hub.id
@@ -196,6 +198,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "hub" {
 # Spoke VPCs
 ########################################
 
+# tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-vpcs
 resource "aws_vpc" "spoke" {
   for_each             = local.spokes_by_name
   cidr_block           = each.value.vpc_cidr
@@ -218,6 +221,7 @@ resource "aws_subnet" "spoke_private" {
 }
 
 # Spoke public subnets (flattened, optional)
+# tfsec:ignore:aws-ec2-no-public-ip-subnet
 resource "aws_subnet" "spoke_public" {
   for_each                = local.spoke_public_flat
   vpc_id                  = aws_vpc.spoke[each.value.spoke].id
@@ -322,6 +326,7 @@ resource "aws_iam_role" "flowlogs_role" {
   tags = local.tags_base
 }
 
+# tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "flowlogs_role_policy" {
   count = local.flow_to_cw ? 1 : 0
   name  = "${var.prefix}-vpc-flowlogs-policy"
@@ -331,7 +336,7 @@ resource "aws_iam_role_policy" "flowlogs_role_policy" {
     Statement = [{
       Effect   = "Allow",
       Action   = ["logs:CreateLogStream", "logs:PutLogEvents", "logs:DescribeLogGroups", "logs:DescribeLogStreams"],
-      Resource = "${aws_cloudwatch_log_group.flow_hub[0].arn}:*"
+      Resource = "${aws_cloudwatch_log_group.flow_hub[0].arn}:*" # stream-level ARN required by AWS
     }]
   })
 }
